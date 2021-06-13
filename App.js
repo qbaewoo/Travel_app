@@ -1,6 +1,4 @@
 /**
- * Sample React Native App
- * https://github.com/facebook/react-native
  *
  * @format
  * @flow
@@ -28,6 +26,14 @@ import Tabs from './navigation/tabs';
 import { AuthContext } from './components/context';
 
 import RootStackScreen from './navigation/RootStackScreen';
+
+import { QueryClientProvider, QueryClient } from 'react-query';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { LogBox } from 'react-native';
+
+LogBox.ignoreLogs(['Setting a timer']);
+
+const queryClient = new QueryClient();
 
 
 const Drawer = createDrawerNavigator();
@@ -159,19 +165,49 @@ const App = () => {
     );
   }
   return (
-    <PaperProvider theme={theme}>
-      <AuthContext.Provider value={authContext}>
-        <NavigationContainer theme={theme}>
-          {loginState.userToken !== null ? (
-            <Tabs />
-          )
-            :
-            <RootStackScreen />
-          }
-        </NavigationContainer>
-      </AuthContext.Provider>
-    </PaperProvider>
+    <SafeAreaProvider>
+      <PaperProvider theme={theme}>
+        <AuthContext.Provider value={authContext}>
+          <NavigationContainer theme={theme}>
+            {loginState.userToken !== null ? (
+              <QueryClientProvider client={queryClient}>
+                <Tabs />
+              </QueryClientProvider>
+            )
+              :
+              <RootStackScreen />
+            }
+          </NavigationContainer>
+        </AuthContext.Provider>
+      </PaperProvider>
+    </SafeAreaProvider>
   );
 }
 
 export default App;
+
+
+/*import React from 'react';
+import {AppContextProvider} from './src/context/AppContext';
+import AppNavContainer from './src/navigation/AppNavContainer';
+import {QueryClientProvider, QueryClient} from 'react-query';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
+import {LogBox} from 'react-native';
+
+LogBox.ignoreLogs(['Setting a timer']);
+
+const queryClient = new QueryClient();
+
+const App = () => {
+  return (
+    <SafeAreaProvider>
+      <AppContextProvider>
+        <QueryClientProvider client={queryClient}>
+          <AppNavContainer />
+        </QueryClientProvider>
+      </AppContextProvider>
+    </SafeAreaProvider>
+  );
+};
+
+export default App;*/

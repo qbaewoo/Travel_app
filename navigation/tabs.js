@@ -1,21 +1,29 @@
-import React from 'react';
-import { View, Image, Text, Button, StyleSheet, OpaqueColorValue } from 'react-native';
+import React,{useReducer,useContext} from 'react';
+import { View, Image, Text, Button, StyleSheet, OpaqueColorValue, TouchableOpacity } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import HomeScreen from '../screens/HomeScreen';
-import MyFavScreen from '../screens/MyFavScreen';
+
+
+import HomeScreen from '../screens/screensMerey/Home/HomeScreen';
+import LikeListScreen from '../screens/screensMerey/LikeList/LikeListScreen';
+import City1 from '../screens/screensMerey/City1/City1';
+import City2 from '../screens/screensMerey/City2/City2';
+import PlaceInfo from '../screens/screensMerey/PlaceInfo/PlaceInfo';
 import RouteScreen from '../screens/RouteScreen';
 import MapScreen from '../screens/MapScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import EditScreen from '../screens/EditScreen';
+import { initialState, reducer } from '../components/reducer';
 
 const HomeStack = createStackNavigator();
 const ProfileStack = createStackNavigator();
 
 const Tab = createBottomTabNavigator();
+const AppContext = React.createContext();
+export const useAppContext = () => useContext(AppContext);
 
 const Tabs = () => {
     return (
@@ -135,11 +143,11 @@ const ProfileStackScreen = ({ navigation }) => (
         />
 
         <ProfileStack.Screen
-            name='MyFav'
+            name='LikeListScreen'
             options={{
                 title: 'My Favorite List'
             }}
-            component={MyFavScreen}
+            component={LikeListScreen}
 
         />
 
@@ -150,42 +158,70 @@ const ProfileStackScreen = ({ navigation }) => (
 
 
 const HomeStackScreen = ({ navigation }) => (
-    <HomeStack.Navigator
-        screenOptions={{
-            headerStyle: {
-                backgroundColor: '#B996E4',
-            },
-            headerTintColor: '#000',
-            headerTitleStyle: {
-                fontWeight: 'bold',
-                color: '#fff',
-                fontSize: 25,
-            },
-        }}>
-        <HomeStack.Screen
-            name='Home'
-            component={HomeScreen}
-            options={{
-                title: '  Welcome!',
-                headerRight: () => (
-                    <Icon.Button
-                        name='heart-multiple'
-                        size={30}
-                        backgroundColor="#B996E4"
-                        color="#fff"
-                        borderColor="#fff"
-                        onPress={() => navigation.navigate('MyFav')}
-                    />
-                ),
-            }}
-        />
+    <AppContext.Provider value={useReducer(reducer, initialState)}>
+        <HomeStack.Navigator
+            screenOptions={{
+                headerStyle: {
+                    backgroundColor: '#B996E4',
+                },
+                headerTintColor: '#000',
+                headerTitleStyle: {
+                    fontWeight: 'bold',
+                    color: '#fff',
+                    fontSize: 25,
+                },
+            }}>
+            <HomeStack.Screen
+                name='Home'
+                component={HomeScreen}
+                options={{
+                    title: '  Welcome!',
+                    headerRight: () => (
+                        <TouchableOpacity
+                            style={{
+                                paddingHorizontal: 12,
+                            }}
+                            onPress={() => navigation.navigate('LikeListScreen')}>
+                            <MaterialCommunityIcons
+                                name="heart-multiple"
+                                color="#fff"
+                                size={25}
+                            />
+                        </TouchableOpacity>
+                    ),
+                }}
+            />
 
-        <HomeStack.Screen
-            name='MyFav'
-            options={{
-                title: 'My Favorite List'
-            }}
-            component={MyFavScreen}
-        />
-    </HomeStack.Navigator>
+            <HomeStack.Screen
+                name='LikeListScreen'
+                options={{
+                    title: 'My Favorite List'
+                }}
+                component={LikeListScreen}
+            />
+
+            <HomeStack.Screen
+                options={() => ({
+                    title: 'Place Info',
+                })}
+                name="PlaceInfo"
+                component={PlaceInfo}
+            />
+            <HomeStack.Screen
+                options={() => ({
+                    title: 'Nur-Sultan',
+                })}
+                name="City1"
+                component={City1}
+            />
+            <HomeStack.Screen
+                options={() => ({
+                    title: 'Almaty',
+                })}
+                name="City2"
+                component={City2}
+            />
+
+        </HomeStack.Navigator>
+    </AppContext.Provider>
 );

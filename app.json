@@ -1,34 +1,17 @@
 {
   "expo": {
-    "name": "travel-app",
-    "slug": "travel-app",
+    "name": "Your App Name",
+    "icon": "./assets/mainIcon.png",
     "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
-    "updates": {
-      "fallbackToCacheTimeout": 0
-    },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "slug": "your-app-slug",
     "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.apple.Pages"
+      "bundleIdentifier": "com.yourcompany.yourappname",
+      "buildNumber": "1.0.0"
     },
     "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
-      },
-      "package": "com.cocoacasts.scribbles"
-    },
-    "web": {
-      "favicon": "./assets/favicon.png"
+      "package": "com.yourcompany.yourappname",
+      "versionCode": 1,
+      "enableDangerousExperimentalLeanBuilds": true
     }
   }
 }
